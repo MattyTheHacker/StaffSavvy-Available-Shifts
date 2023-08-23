@@ -37,6 +37,10 @@ def check_cookie():
             soup = BeautifulSoup(response.text, "html.parser")
             if soup.find("input", {"id": "login_email"}) is not None:
                 print("Invalid cookie")
+                VALID_COOKIE = False
+            else:
+                print("Valid cookie")
+                VALID_COOKIE = True
         else:
             VALID_COOKIE = False
 
