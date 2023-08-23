@@ -31,6 +31,12 @@ def check_shifts():
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
 
+            # check that we've not been redirected to the login page
+            # look for the input with the id 'login_email'
+            if soup.find("input", {"id": "login_email"}) is not None:
+                print("Invalid cookie")
+                return
+
             # get the table on the page
             table = soup.find("table")
 
