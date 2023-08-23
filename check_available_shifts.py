@@ -15,8 +15,33 @@ load_dotenv()
 # get cookie from environment variables
 cookie = os.getenv("COOKIE")
 
+VALID_COOKIE = False
+
 
 shifts_currently_available = []
+
+def check_cookie():
+    global VALID_COOKIE
+
+    try:
+        response = requests.get(
+            url="https://staff.guildofstudents.com/shifts/available",
+            headers={
+                "cookie": cookie
+            }
+        )
+
+        if response.status_code == 200:
+            # check that we've not been redirected to the login page
+            # look for the input with the id 'login_email'
+            soup = BeautifulSoup(response.text, "html.parser")
+            if soup.find("input", {"id": "login_email"}) is not None:
+                print("Invalid cookie")
+        else:
+            VALID_COOKIE = False
+
+    except Exception as e:
+        print(e)
 
 
 def check_shifts():
@@ -30,12 +55,6 @@ def check_shifts():
 
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
-
-            # check that we've not been redirected to the login page
-            # look for the input with the id 'login_email'
-            if soup.find("input", {"id": "login_email"}) is not None:
-                print("Invalid cookie")
-                return
 
             # get the table on the page
             table = soup.find("table")
@@ -103,5 +122,9 @@ def update_shift_file():
 
 
 if __name__ == "__main__":
-    check_shifts()
-    update_shift_file()
+    check_cookie()
+
+    if VALID_COOKIE:
+        check_shifts()
+        update_shift_file()
+
