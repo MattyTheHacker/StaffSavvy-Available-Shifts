@@ -1,1 +1,1 @@
-"# StaffSavvy-Available-Shifts" 
+# StaffSavvy-Available-Shifts
