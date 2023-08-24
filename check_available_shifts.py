@@ -132,7 +132,8 @@ def update_shift_file():
                 else:
                     print("idk what the fuck you did but it wasn't correct")
     
-    send_x_new_available_shifts_notif(new_shifts)
+    if new_shifts > 0:
+        send_x_new_available_shifts_notif(new_shifts)
 
 
 if __name__ == "__main__":
