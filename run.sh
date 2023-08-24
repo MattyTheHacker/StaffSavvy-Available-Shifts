@@ -3,6 +3,9 @@
 # cd to the directory the script
 cd /home/pi/Documents/StaffSavvy-Available-Shifts/
 
+# make sure the repo is up to date
+git pull
+
 # run the script
 python check_available_shifts.py
 
