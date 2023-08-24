@@ -4,6 +4,7 @@ users should put their cookie in the .env file
 """
 
 # Imports
+from notif_utils import *
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 import requests
@@ -37,6 +38,9 @@ def check_cookie():
             soup = BeautifulSoup(response.text, "html.parser")
             if soup.find("input", {"id": "login_email"}) is not None:
                 print("Invalid cookie")
+                
+                send_invalid_cookie_notif()
+
                 VALID_COOKIE = False
             else:
                 print("Valid cookie")
@@ -89,6 +93,8 @@ def update_shift_file():
 
     shifts_from_file = []
 
+    new_shifts = 0
+
     # open the file and put the shifts into a list
     # if the file doesn't exist, create it
 
@@ -110,12 +116,14 @@ def update_shift_file():
             for shift in shifts_currently_available:
                 f.write(shift + "\n")
                 print(f"Added shift {shift} to file")
+                new_shifts += 1
     else:
         with open("shifts.txt", "w") as f:
             for shift in shifts_currently_available:
                 if shift not in shifts_from_file:
                     f.write(shift + "\n")
                     print(f"Added shift {shift} to file")
+                    new_shifts += 1
                 elif shift in shifts_from_file:
                     f.write(shift + "\n")
                     print(f"Shift {shift} already in file")
@@ -123,6 +131,8 @@ def update_shift_file():
                     print(f"Removed shift {shift} from file")
                 else:
                     print("idk what the fuck you did but it wasn't correct")
+    
+    send_x_new_available_shifts_notif(new_shifts)
 
 
 if __name__ == "__main__":
