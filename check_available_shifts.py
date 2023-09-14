@@ -75,6 +75,8 @@ def check_shifts():
                     shift_id = row["data-shift"]
                     shifts_currently_available.append(shift_id)
 
+                print(shifts_currently_available)
+
             else:
                 print("No shifts available")
                 return
