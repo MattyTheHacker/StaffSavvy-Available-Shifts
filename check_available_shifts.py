@@ -50,6 +50,7 @@ def check_cookie():
 
     except Exception as e:
         print(e)
+        print(response)
 
 
 def check_shifts():
