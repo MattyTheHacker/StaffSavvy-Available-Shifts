@@ -50,7 +50,7 @@ def check_cookie():
 
     except Exception as e:
         print(e)
-        print(response)
+        # print(response.text)
 
 
 def check_shifts():
@@ -65,18 +65,14 @@ def check_shifts():
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
 
-            # get the table on the page
-            table = soup.find("table")
-
-            if table is not None:
+            if soup is not None:
                 # get the rows of the table
-                rows = table.find_all("tr")
+                # we need the shift IDs, which are stored in the tr elements
+                # format: <tr data-shift="1234">
+                rows = soup.findAll('tr', {"data-shift": True})
 
                 for row in rows:
-                    # get the shift ID from the href
-                    # format: href="/shift-details/ShiftID"
-                    shift_id = row.find("a")["href"].split("/")[2]
-
+                    shift_id = row["data-shift"]
                     shifts_currently_available.append(shift_id)
 
             else:
@@ -85,7 +81,7 @@ def check_shifts():
 
     except Exception as e:
         print(e)
-        print(response.text)
+        # print(response.text)
 
 
 def update_shift_file():
