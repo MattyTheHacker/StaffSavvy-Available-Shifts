@@ -85,6 +85,7 @@ def check_shifts():
 
     except Exception as e:
         print(e)
+        print(response)
 
 
 def update_shift_file():
